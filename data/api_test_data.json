@@ -1,0 +1,4 @@
+[
+  {"name": "正常注册", "data": {"email": "eve.holt@reqres.in", "password": "pistol"}, "expected": 200},
+  {"name": "缺密码", "data": {"email": "sydney@fife"}, "expected": 400}
+]

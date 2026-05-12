@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo Login</title>
+</head>
+<body>
+    <h2>登录页面</h2>
+
+    <input id="username" placeholder="请输入用户名">
+    <input id="password" placeholder="请输入密码" type="password">
+    <button id="login-btn" onclick="login()">登录</button>
+
+    <p id="message"></p>
+
+    <script>
+        function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const message = document.getElementById("message");
+
+            if (username === "" || password === "") {
+                message.innerText = "用户名或密码不能为空";
+            } else if (username === "admin" && password === "123456") {
+                message.innerText = "登录成功";
+            } else {
+                message.innerText = "用户名或密码错误";
+            }
+        }
+    </script>
+</body>
+</html>

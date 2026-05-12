@@ -1,0 +1,12 @@
+2026-05-12 17:49:56,289 - INFO - 请求方式：POST
+2026-05-12 17:49:56,289 - INFO - 请求url：https://reqres.in/api/login
+2026-05-12 17:49:56,290 - INFO - 请求参数：{'email': 'eve.holt@reqres.in', 'password': 'pistol'}
+2026-05-12 17:49:56,290 - INFO - 请求头：{'x-api-key': 'pub_7d5815ea676a7ddeba8297c2aee1c72fbed0c2b0a45dcc4f723ac0454e1bfeb6'}
+2026-05-12 17:49:58,622 - INFO - 请求方式：POST
+2026-05-12 17:49:58,622 - INFO - 请求url：https://reqres.in/api/login
+2026-05-12 17:49:58,622 - INFO - 请求参数：{'email': 'sydney@fife'}
+2026-05-12 17:49:58,623 - INFO - 请求头：{'x-api-key': 'pub_7d5815ea676a7ddeba8297c2aee1c72fbed0c2b0a45dcc4f723ac0454e1bfeb6'}
+2026-05-12 17:50:00,721 - INFO - 请求方式：POST
+2026-05-12 17:50:00,722 - INFO - 请求url：https://reqres.in/api/login
+2026-05-12 17:50:00,722 - INFO - 请求参数：{'email': 'eve.holt@reqres.in', 'password': 'pistol'}
+2026-05-12 17:50:00,723 - INFO - 请求头：{'x-api-key': 'pub_7d5815ea676a7ddeba8297c2aee1c72fbed0c2b0a45dcc4f723ac0454e1bfeb6'}
