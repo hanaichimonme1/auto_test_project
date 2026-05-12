@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>用户注册</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="page">
+    <div class="card">
+        <h1>创建账号</h1>
+        <p class="subtitle">注册一个测试用户，用于后续登录和查询个人信息。</p>
+
+        <div class="form-group">
+            <label for="username">用户名</label>
+            <input id="username" placeholder="请输入用户名">
+        </div>
+
+        <div class="form-group">
+            <label for="email">邮箱</label>
+            <input id="email" placeholder="请输入邮箱">
+        </div>
+
+        <div class="form-group">
+            <label for="password">密码</label>
+            <input id="password" type="password" placeholder="请输入密码">
+        </div>
+
+        <button id="register-btn" onclick="registerUser()">注册</button>
+
+        <div id="message" class="message"></div>
+
+        <div class="link-row">
+            已有账号？<a href="/login-page">去登录</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function registerUser() {
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const message = document.getElementById("message");
+
+        message.className = "message";
+        message.innerText = "";
+
+        const response = await fetch("/api/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username: username,
+                email: email,
+                password: password
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            message.className = "message success";
+            message.innerText = result.message + "，即将跳转到登录页";
+
+            setTimeout(() => {
+                window.location.href = "/login-page";
+            }, 800);
+        } else {
+            message.className = "message error";
+            message.innerText = result.message;
+        }
+    }
+</script>
+</body>
+</html>

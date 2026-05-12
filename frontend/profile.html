@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="page">
+    <div class="card card-wide">
+        <h1>个人信息</h1>
+        <p class="subtitle">这里展示当前登录用户的基础信息。</p>
+
+        <div id="profile-container">
+            <div class="profile-item">
+                <div class="profile-label">用户 ID</div>
+                <div id="user-id" class="profile-value">加载中...</div>
+            </div>
+
+            <div class="profile-item">
+                <div class="profile-label">用户名</div>
+                <div id="username" class="profile-value">加载中...</div>
+            </div>
+
+            <div class="profile-item">
+                <div class="profile-label">邮箱</div>
+                <div id="email" class="profile-value">加载中...</div>
+            </div>
+
+            <div class="profile-item">
+                <div class="profile-label">注册时间</div>
+                <div id="created-at" class="profile-value">加载中...</div>
+            </div>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <button class="logout-btn" onclick="logout()">退出登录</button>
+    </div>
+</div>
+
+<script>
+    async function loadProfile() {
+        const token = localStorage.getItem("token");
+        const message = document.getElementById("message");
+
+        if (!token) {
+            message.className = "message error";
+            message.innerText = "未登录，请先登录";
+
+            setTimeout(() => {
+                window.location.href = "/login-page";
+            }, 800);
+
+            return;
+        }
+
+        const response = await fetch("/api/profile", {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            document.getElementById("user-id").innerText = result.data.id;
+            document.getElementById("username").innerText = result.data.username;
+            document.getElementById("email").innerText = result.data.email;
+            document.getElementById("created-at").innerText = result.data.created_at;
+
+            message.className = "message success";
+            message.innerText = result.message;
+        } else {
+            message.className = "message error";
+            message.innerText = result.message;
+
+            setTimeout(() => {
+                window.location.href = "/login-page";
+            }, 1000);
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem("token");
+        window.location.href = "/login-page";
+    }
+
+    loadProfile();
+</script>
+</body>
+</html>
