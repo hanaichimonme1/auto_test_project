@@ -3,6 +3,8 @@ import time
 import pytest
 import requests
 
+from app.main import profile_page
+from common.request_util import RequestUtil
 
 BASE_URL = "http://127.0.0.1:8000"
 
@@ -23,29 +25,31 @@ def test_register_login_profile_api_flow():
     user = generate_test_user()
 
     # 1. 注册用户
-    register_res = requests.post(
-        f"{BASE_URL}/api/register",
-        json={
-            "username": user["username"],
-            "email": user["email"],
-            "password": user["password"]
-        }
-    )
-
+    register_res=RequestUtil.send_method(
+        method="post",
+        url=f"{BASE_URL}/api/register",
+                                         json={
+                                             "username": user["username"],
+                                             "email": user["email"],
+                                             "password": user["password"]
+                                         }
+                                         )
     assert register_res.status_code == 200
     register_json = register_res.json()
     assert register_json["success"] is True
     assert register_json["message"] == "注册成功"
 
     # 2. 重复注册应该失败
-    duplicate_res = requests.post(
-        f"{BASE_URL}/api/register",
-        json={
-            "username": user["username"],
-            "email": user["email"],
-            "password": user["password"]
-        }
-    )
+
+    duplicate_res = RequestUtil.send_method(
+        method="post",
+        url=f"{BASE_URL}/api/register",
+                                         json={
+                                             "username": user["username"],
+                                             "email": user["email"],
+                                             "password": user["password"]
+                                         }
+                                         )
 
     assert duplicate_res.status_code == 400
     duplicate_json = duplicate_res.json()
@@ -53,14 +57,14 @@ def test_register_login_profile_api_flow():
     assert duplicate_json["message"] == "用户名已存在"
 
     # 3. 登录用户
-    login_res = requests.post(
-        f"{BASE_URL}/api/login",
+    login_res= RequestUtil.send_method(
+        method="post",
+        url=f"{BASE_URL}/api/login",
         json={
-            "username": user["username"],
-            "password": user["password"]
+        "username": user["username"],
+        "password": user["password"]
         }
-    )
-
+        )
     assert login_res.status_code == 200
     login_json = login_res.json()
     assert login_json["success"] is True
@@ -71,12 +75,12 @@ def test_register_login_profile_api_flow():
     token = login_json["token"]
 
     # 4. 带 token 查询个人信息
-    profile_res = requests.get(
-        f"{BASE_URL}/api/profile",
-        headers={
-            "Authorization": f"Bearer {token}"
-        }
-    )
+    profile_res = RequestUtil.send_method(method="get",
+                                          url=f"{BASE_URL}/api/profile",
+                                          headers={
+                                              "Authorization": f"Bearer {token}"
+                                          }
+                                          )
 
     assert profile_res.status_code == 200
     profile_json = profile_res.json()
@@ -92,23 +96,23 @@ def test_login_with_wrong_password():
     user = generate_test_user()
 
     # 先注册一个用户
-    requests.post(
-        f"{BASE_URL}/api/register",
-        json={
-            "username": user["username"],
-            "email": user["email"],
-            "password": user["password"]
-        }
-    )
+    RequestUtil.send_method(method="post",
+                            url=f"{BASE_URL}/api/register",
+                            json={
+                                "username": user["username"],
+                                "email": user["email"],
+                                "password": user["password"]
+                            }
+                            )
 
     # 使用错误密码登录
-    login_res = requests.post(
-        f"{BASE_URL}/api/login",
-        json={
-            "username": user["username"],
-            "password": "wrong_password"
-        }
-    )
+    login_res = RequestUtil.send_method(method="post",
+                                        url=f"{BASE_URL}/api/login",
+                                        json={
+                                            "username": user["username"],
+                                            "password": "wrong_password"
+                                        }
+                                        )
 
     assert login_res.status_code == 401
     login_json = login_res.json()
@@ -118,7 +122,7 @@ def test_login_with_wrong_password():
 
 @pytest.mark.api
 def test_profile_without_token():
-    profile_res = requests.get(f"{BASE_URL}/api/profile")
+    profile_res = RequestUtil.send_method(method="get",url=f"{BASE_URL}/api/profile")
 
     assert profile_res.status_code == 401
     profile_json = profile_res.json()
