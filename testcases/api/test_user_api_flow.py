@@ -1,9 +1,5 @@
 import time
-
 import pytest
-import requests
-
-from app.main import profile_page
 from common.request_util import RequestUtil
 
 BASE_URL = "http://127.0.0.1:8000"

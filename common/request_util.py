@@ -1,10 +1,7 @@
 #封装请求工具，不然的话每次都要写requests.post，把发请求变成一个统一的入口
-from asyncio import timeout
-
 import requests
 from common.config import config
 from common.logger import get_logger
-
 logger=get_logger() #获取日志对象
 class RequestUtil:
 
