@@ -18,7 +18,9 @@ def load_test_data(path):
 @pytest.mark.api
 @pytest.mark.login
 #测试用例参数化  --- 掌握基本测试写法
-@pytest.mark.parametrize("case",load_test_data("data/api_test_data.json"))
+@pytest.mark.parametrize("case",
+                         load_test_data("data/api_test_data.json"),
+                         ids=[c["name"] for c in load_test_data("data/api_test_data.json")])
 def test_register(case):
     res=RequestUtil.send_method(url,"POST",headers=headers,data=case["data"])
     print(res.json())

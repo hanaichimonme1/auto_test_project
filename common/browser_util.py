@@ -26,9 +26,10 @@ def wait_find(driver, by, value, timeout: int = 5):
     """
     显式等待元素出现，并返回该元素。
     """
-    return WebDriverWait(driver, timeout).until(
-        EC.presence_of_element_located((by, value))
+    element=WebDriverWait(driver,timeout).until(
+        EC.presence_of_element_located((by,value))
     )
+    return element
 
 
 def wait_click(driver, by, value, timeout: int = 5):
@@ -49,3 +50,20 @@ def save_screenshot(driver, file_path):
     path.parent.mkdir(parents=True, exist_ok=True)
     driver.save_screenshot(str(path))
     return path
+
+def wait_url_contains(driver, text, timeout: int = 5):
+    """
+    等待当前 URL 包含指定文本。
+    """
+    return WebDriverWait(driver, timeout).until(
+        EC.url_contains(text)
+    )
+
+
+def wait_text_present(driver, by, value, text, timeout: int = 5):
+    """
+    等待指定元素中出现目标文本。
+    """
+    return WebDriverWait(driver, timeout).until(
+        EC.text_to_be_present_in_element((by, value), text)
+    )

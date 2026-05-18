@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 
 from common.browser_util import create_driver, save_screenshot
+from common.config import config
 from common.request_util import RequestUtil
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -47,11 +48,11 @@ def pytest_runtest_makereport(item, call):
 
 @pytest.fixture(scope="session")
 def get_token():
-    url = "https://reqres.in/api/login"
+    url=config.get("base_url")
     data={
         "email":"eve.holt@reqres.in","password":"pistol"
     }
-    res=RequestUtil.send_method(url,"POST",data=data)
+    res=RequestUtil.send_method(url,"POST",json=data)
     token=res.json().get("token")
     # assert res.status_code == 200
     # assert "token" in res.json()

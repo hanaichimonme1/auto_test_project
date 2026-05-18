@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="page">
+    <div class="card">
+        <h1>欢迎回来</h1>
+        <p class="subtitle">登录后可以查看当前用户信息。</p>
+
+        <div class="form-group">
+            <label for="username">用户名</label>
+            <input id="username" placeholder="请输入用户名">
+        </div>
+
+        <div class="form-group">
+            <label for="password">密码</label>
+            <input id="password" type="password" placeholder="请输入密码">
+        </div>
+
+        <button id="login-btn" onclick="loginUser()">登录</button>
+
+        <div id="message" class="message"></div>
+
+        <div class="link-row">
+            还没有账号？<a href="/register-page">去注册</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function loginUser() {
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const message = document.getElementById("message");
+
+        message.className = "message";
+        message.innerText = "";
+
+        const response = await fetch("/api/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            localStorage.setItem("token", result.token);
+
+            message.className = "message success";
+            message.innerText = result.message + "，即将进入个人信息页";
+
+            setTimeout(() => {
+                window.location.href = "/profile-page";
+            }, 800);
+        } else {
+            message.className = "message error";
+            message.innerText = result.message;
+        }
+    }
+</script>
+</body>
+</html>
