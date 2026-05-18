@@ -12,9 +12,6 @@ from pathlib import Path
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
-
-
-
 app = FastAPI(title="Lightweight User System")
 security = HTTPBearer(auto_error=False)
 BASE_DIR = Path(__file__).resolve().parent.parent

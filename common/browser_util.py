@@ -26,9 +26,10 @@ def wait_find(driver, by, value, timeout: int = 5):
     """
     显式等待元素出现，并返回该元素。
     """
-    return WebDriverWait(driver, timeout).until(
-        EC.presence_of_element_located((by, value))
+    element=WebDriverWait(driver,timeout).until(
+        EC.presence_of_element_located((by,value))
     )
+    return element
 
 
 def wait_click(driver, by, value, timeout: int = 5):
