@@ -1,12 +1,10 @@
 import time
-
 import pytest
 from selenium.webdriver.common.by import By
-
 from common.browser_util import wait_find, wait_click, wait_url_contains, wait_text_present
+from common.config import config
 
-
-BASE_URL = "http://127.0.0.1:8000"
+BASE_URL = config["local_base_url"]
 
 
 def generate_test_user():

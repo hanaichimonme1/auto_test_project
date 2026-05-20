@@ -1,14 +1,11 @@
 import time
-
 import pytest
-import requests
 
-from app.main import profile_page
+from common.assert_util import assert_response
+from common.config import config
 from common.request_util import RequestUtil
 
-BASE_URL = "http://127.0.0.1:8000"
-
-
+BASE_URL = config["local_base_url"]
 def generate_test_user():
     timestamp = int(time.time())
     return {
@@ -34,10 +31,7 @@ def test_register_login_profile_api_flow():
                                              "password": user["password"]
                                          }
                                          )
-    assert register_res.status_code == 200
-    register_json = register_res.json()
-    assert register_json["success"] is True
-    assert register_json["message"] == "注册成功"
+    assert_response(register_res,200,success=True,message="注册成功")
 
     # 2. 重复注册应该失败
 
@@ -51,10 +45,7 @@ def test_register_login_profile_api_flow():
                                          }
                                          )
 
-    assert duplicate_res.status_code == 400
-    duplicate_json = duplicate_res.json()
-    assert duplicate_json["success"] is False
-    assert duplicate_json["message"] == "用户名已存在"
+    assert_response(duplicate_res,400,success=False,message="用户名已存在")
 
     # 3. 登录用户
     login_res= RequestUtil.send_method(
@@ -65,14 +56,8 @@ def test_register_login_profile_api_flow():
         "password": user["password"]
         }
         )
-    assert login_res.status_code == 200
-    login_json = login_res.json()
-    assert login_json["success"] is True
-    assert login_json["message"] == "登录成功"
-    assert "token" in login_json
-    assert login_json["token"]
-
-    token = login_json["token"]
+    assert_response(login_res,200,success=True,message="登录成功")
+    token = login_res.json()["token"]
 
     # 4. 带 token 查询个人信息
     profile_res = RequestUtil.send_method(method="get",
@@ -82,12 +67,10 @@ def test_register_login_profile_api_flow():
                                           }
                                           )
 
-    assert profile_res.status_code == 200
-    profile_json = profile_res.json()
-    assert profile_json["success"] is True
-    assert profile_json["message"] == "查询成功"
-    assert profile_json["data"]["username"] == user["username"]
-    assert profile_json["data"]["email"] == user["email"]
+    assert_response(profile_res,200,success=True,message="查询成功")
+    profile_data = profile_res.json()["data"]
+    assert profile_data["username"] == user["username"]
+    assert profile_data["email"] == user["email"]
 
 
 @pytest.mark.api
@@ -114,17 +97,11 @@ def test_login_with_wrong_password():
                                         }
                                         )
 
-    assert login_res.status_code == 401
-    login_json = login_res.json()
-    assert login_json["success"] is False
-    assert login_json["message"] == "用户名或密码错误"
+    assert_response(login_res,401,success=False,message="用户名或密码错误")
 
 
 @pytest.mark.api
 def test_profile_without_token():
     profile_res = RequestUtil.send_method(method="get",url=f"{BASE_URL}/api/profile")
 
-    assert profile_res.status_code == 401
-    profile_json = profile_res.json()
-    assert profile_json["success"] is False
-    assert profile_json["message"] == "缺少或非法 token"
+    assert_response(profile_res,401,success=False,message="缺少或非法 token")
