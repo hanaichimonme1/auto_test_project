@@ -38,7 +38,6 @@ def pytest_runtest_makereport(item, call):
         driver = item.funcargs.get("driver")
 
         if driver is not None:
-            print(item)
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             case_name = safe_filename(item.name)
             screenshot_path = SCREENSHOT_DIR / f"{case_name}_{timestamp}.png"

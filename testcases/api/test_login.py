@@ -1,11 +1,9 @@
 import pytest
-import json
 from common.assert_util import assert_response
 from common.config import config
 from common.data_util import load_json_data
 from common.request_util import RequestUtil
 
-API_KEY = config["api_key"]
 url=config["base_url"]
 @pytest.mark.api
 @pytest.mark.login
