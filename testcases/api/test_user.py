@@ -1,9 +1,10 @@
+from common.config import config
 from common.request_util import RequestUtil
 import pytest
 @pytest.mark.api
 @pytest.mark.login
 def test_get_user(get_token):
-    url = "https://reqres.in/api/users/2"
+    url = config["base_url"]
     headers={
         "Authorization":f"Bearer {get_token}"
     }

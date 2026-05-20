@@ -1,6 +1,7 @@
 import time
 import pytest
 
+from common.assert_util import assert_response
 from common.config import config
 from common.request_util import RequestUtil
 
@@ -30,10 +31,7 @@ def test_register_login_profile_api_flow():
                                              "password": user["password"]
                                          }
                                          )
-    assert register_res.status_code == 200
-    register_json = register_res.json()
-    assert register_json["success"] is True
-    assert register_json["message"] == "注册成功"
+    assert_response(register_res,200,success=True,message="注册成功")
 
     # 2. 重复注册应该失败
 
