@@ -23,20 +23,7 @@ class RequestUtil:
         logger.info(f"请求头：{default_headers}")
 
         method=method.upper()
-        if method=="GET":
-            res=requests.get(url,
-                             headers=default_headers,
-                             data=data,
-                             json=json,
-                             timeout=timeout)
-        elif method=="POST":
-            res=requests.post(url,
-                              headers=default_headers,
-                              data=data,
-                              json=json,
-                              timeout=timeout)
-
-
+        res = requests.request(method, url, headers=default_headers, data=data, json=json, timeout=timeout)
         logger.info(f"响应状态码：{res.status_code}")
         logger.info(f"响应内容：{res.text}")
         return res
