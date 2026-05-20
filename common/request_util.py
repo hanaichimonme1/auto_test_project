@@ -21,6 +21,7 @@ class RequestUtil:
         logger.info(f"请求url：{url}")
         logger.info(f"请求参数：{data}")
         logger.info(f"请求头：{default_headers}")
+
         method=method.upper()
         if method=="GET":
             res=requests.get(url,
@@ -34,6 +35,8 @@ class RequestUtil:
                               data=data,
                               json=json,
                               timeout=timeout)
+
+
         logger.info(f"响应状态码：{res.status_code}")
         logger.info(f"响应内容：{res.text}")
         return res

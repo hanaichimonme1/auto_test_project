@@ -1,10 +1,10 @@
 import time
 import pytest
+
+from common.config import config
 from common.request_util import RequestUtil
 
-BASE_URL = "http://127.0.0.1:8000"
-
-
+BASE_URL = config["local_base_url"]
 def generate_test_user():
     timestamp = int(time.time())
     return {
